@@ -59,7 +59,7 @@ async def test_sensors(robot_instance: DashRobot):
         print(f"Cycle {_+1}/200 - ", end="")
 
         # Check for button states
-        if robot_instance.is_white_button_pressed():
+        if robot_instance.is_button_white_pressed():
             print("[White]", end="")
         if robot_instance.is_button_1_pressed():
             print("[·]", end="")
@@ -94,6 +94,9 @@ async def main():
     robot = await discover_and_connect()
     if not robot:
         print("No compatible robot found.")
+        return
+    if not isinstance(robot, DashRobot):
+        print("This test is only for Dash robots.")
         return
 
     try:
