@@ -482,7 +482,7 @@ async def discover_and_connect(names_list=[],retry_attempts=3, retry_delay=5):
         try:
             devices = await BleakScanner.discover()
             for device in devices:
-                if device.name in my_list:
+                if device.name in names_list:
                     logging.info(f"Found Dash at: {device.address}")
                     dash_robot = DashRobot(device.address)
                     await dash_robot.connect()
