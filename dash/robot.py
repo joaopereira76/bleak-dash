@@ -278,22 +278,18 @@ class DashRobot(Robot):
 
     async def spin(self, speed):
         """
-        Start spinning Dash left or right asynchronously.
-
-        Dash will continue spinning until another drive(), spin() or stop()
-        command is issued.
-
-        :param speed: Speed at which to spin, 200 is a reasonable value.
-        Positive values spin clockwise and negative counter-clockwise.
+        Spin clockwise or counter-clockwise.
         """
-        speed = max(-2048, speed)
-        speed = min(2048, speed)
-        if speed < 0:
-            speed = 0x8000 + abs(speed)  # Adjust for negative speeds if necessary
+    
+        speed = max(-2048, min(2048, speed))
+    
+        # converter para signed 16-bit
+        speed_bytes = int(speed).to_bytes(2, byteorder='little', signed=True)
+    
         await self.command("drive", bytearray([
-            0x00,  # Placeholder for potential additional parameters
-            speed & 0xff,
-            (speed >> 8) & 0xff
+            0x00,
+            speed_bytes[0],
+            speed_bytes[1]
         ]))
 
 
